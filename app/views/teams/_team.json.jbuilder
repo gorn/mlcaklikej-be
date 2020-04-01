@@ -1,2 +1,3 @@
-json.extract! team, :id, :name, :created_at, :updated_at
-json.url team_url(team, format: :json)
+json.order poradi
+json.team team.name
+json.clicks team.click_count

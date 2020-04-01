@@ -1,1 +1,17 @@
+
+<%= form_with(model: @session, local: true) do |form| %>
+  <% if @session.errors.any? %>
+    <div id="error_explanation">Nastala chyba, co6 je divný</div>
+  <% end %>
+
+  <%= form.hidden_field :session_string %>
+
+  <div class="field">
+    <%= label_tag :team_name, 'Za který team klikáš' %>
+    <%= text_field_tag :team_name %> <%= form.submit 'KLIK' %>
+  </div>
+
+<% end %>
+
+
 <%= render 'leaderboard', teams: @teams %>

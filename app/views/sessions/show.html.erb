@@ -1,8 +1,20 @@
 <p id="notice"><%= notice %></p>
 
 <h2>Klikáš za team <b><%= @session.team.name %></b></h2>
-<p>
-  Už jsi mu naklikal <%= @session.click_count %>
-</p>
+<h1><%= link_to 'KLIK', test_klik_session_path(@session), method: :post %></h1>
+
+<table>
+<tr>
+  <th>Tvoje kliky</th>
+  <th>Kliky celého teamu</th>
+</tr>
+<tr>
+  <td><%= @session.click_count %></td>
+  <td><%= @session.team.click_count %></td>
+</tr>
+</table>
+
 
 <%= render 'teams/leaderboard', teams: @teams %>
+
+<%= link_to 'Homepage', teams_path %>

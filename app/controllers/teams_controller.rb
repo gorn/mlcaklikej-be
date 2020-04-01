@@ -1,10 +1,14 @@
 class TeamsController < ApplicationController
-  before_action :set_team, only: [:show, :edit, :update, :destroy]
+  before_action :set_team, only: [:show, :edit, :update, :destroy, :klik]
 
   # GET /teams
   # GET /teams.json
   def index
     @teams = Team.leaderboard
+    @session = Session.new(
+      session_string: Session.suggest_random_sessions_string,
+      click_count: 1 # budeme počítat i první klik
+    )
   end
 
   # GET /admin_index
