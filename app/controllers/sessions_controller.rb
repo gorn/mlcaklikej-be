@@ -72,7 +72,7 @@ class SessionsController < ApplicationController
   def create
     # default clicks to 0 (unless specified)
     session_params_hash = session_params.to_h
-    session_params_hash[:click_count] = 0 unless session_params_hash[:click_count]
+    session_params_hash[:click_count] = 1 unless session_params_hash[:click_count]
 
     # find out team_id from team_name
     if params[:team_name].empty?

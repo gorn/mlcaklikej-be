@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <h2>Klikáš za team <b><%= @session.team.name %></b></h2>
 <h1><%= link_to 'KLIK', test_klik_session_path(@session), method: :post %></h1>
 
@@ -17,4 +15,4 @@
 
 <%= render 'teams/leaderboard', teams: @teams %>
 
-<%= link_to 'Homepage', teams_path %>
+<%= link_to 'Začít úplně odznova', teams_path %>
