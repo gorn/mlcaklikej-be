@@ -1,0 +1,8 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Klikáš za team <b><%= @session.team.name %></b></h2>
+<p>
+  Už jsi mu naklikal <%= @session.click_count %>
+</p>
+
+<%= render 'teams/leaderboard', teams: @teams %>

@@ -1,0 +1,36 @@
+
+<%= form_with(model: @session, local: true) do |form| %>
+  <% if @session.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@session.errors.count, "error") %> prohibited this session from being saved:</h2>
+
+      <ul>
+        <% @session.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :session_string %>
+    <%= form.text_field :session_string %>
+  </div>
+
+  <div class="field">
+    <%= form.label :click_count %>
+    <%= form.number_field :click_count %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :team_name %>
+    <%= text_field_tag :team_name, 'Přílepy' %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+
+<%= link_to 'Back to Top 10', teams_path %>

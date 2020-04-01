@@ -1,3 +1,8 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  resources :sessions do
+    get 'admin_new', on: :collection
+  end
+  resources :teams do 
+    get 'admin_index', on: :collection
+  end
 end
