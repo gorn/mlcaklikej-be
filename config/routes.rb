@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   root to: 'teams#index'
 
+  # API routes
   get 'api/v1/leaderboard', to: 'teams#index', defaults: { format: :json }
   post 'api/v1/klik', to: 'sessions#klik', defaults: { format: :json }
 

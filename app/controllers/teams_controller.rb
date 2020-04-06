@@ -6,8 +6,7 @@ class TeamsController < ApplicationController
   def index
     @teams = Team.leaderboard
     @session = Session.new(
-      session_string: Session.suggest_random_sessions_string,
-      click_count: 1 # budeme počítat i první klik
+      session_string: Session.suggest_random_sessions_string
     )
   end
 

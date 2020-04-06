@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   before_action :set_session, only: [:show, :edit, :update, :destroy]
-  skip_before_action :verify_authenticity_token, only: [:klik]
+  skip_before_action :verify_authenticity_token, only: [:klik, :options]
 
   # GET /sessions
   # GET /sessions.json
@@ -33,17 +33,30 @@ class SessionsController < ApplicationController
 
   # POST /api/v1/klik
   def klik
-    # find out or create session
-    @session = Session.find_or_create_by(session_string: klik_params[:session]) do |session|
-      # find out team_id from team_name or create new team
-      team = Team.find_or_create_by(name: params[:team])
-      session[:team_id] = team.id
-    end
+    # cannot klik if params are empty
     respond_to :json
+    if klik_params[:session].blank?
+      render json: '', status: :unprocessable_entity
+      return 
+    end
+
+    # find out team from team_name or create new team
+    team_in_request = Team.find_or_create_by(name: klik_params[:team])
+
+    # find out or create session
+    if @session = Session.find_by(session_string: klik_params[:session]) 
+      if @session.team != team_in_request
+        # this is unspecified by specification, we can either throw an error
+        # or adjust session team to match request team
+        # currently doing the second one (in update session part)
+      end
+    else
+      @session = Session.create(session_string: klik_params[:session], team_id: team_in_request.id )
+    end
 
     # update session
-    if @session.update(click_count: (@session.click_count||0)+1 )
-      render json: {your_clicks: @session.click_count, team_clicks: @session.team.click_count}, status: :ok
+    if @session.update(click_count: (@session.click_count||0)+1, team_id: team_in_request.id )
+      render json: {your_clicks: @session.click_count, team_clicks: @session.team.click_count }, status: :ok
     else
       render json: @session.errors, status: :unprocessable_entity
     end
@@ -132,8 +145,19 @@ class SessionsController < ApplicationController
     end
 
     def klik_params
-      params.require(:team)
-      params.require(:session)
-      params.permit(:team,:session)
+      # if params area empty it might be because Content-Type is wrong
+      # we can try parse request ourselves
+      if params.blank? or params[:team].nil?
+        pom = JSON.parse(request.raw_post)
+        if pom.nil?
+          return []
+        else
+          return { team: pom['team'], session: pom['session'] }
+        end
+      else
+        params.require(:team)
+        params.require(:session)
+        params.permit(:team,:session)
+      end
     end
 end
